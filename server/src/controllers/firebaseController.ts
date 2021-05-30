@@ -30,8 +30,15 @@ export async function postProduto(request: Request, response: Response){
     if(body.imagem && body.nome && body.preco){
 
         const date = new Date()
+        const newProduto = {
+            imagem: body.imagem,
+            nome: body.nome,
+            preco: body.preco,
+            data: date.getTime()
+        }
+
         try{
-            await firebaseApi.postProduto({ ...body, data: date.getTime().toString() })
+            await firebaseApi.postProduto(newProduto)
             response.sendStatus(200)
         }catch(err){
             console.log(err)

@@ -3,14 +3,14 @@ import config from '../config'
 
 export interface IProduto{
     nome: string,
-    data: string,
+    data: number,
     preco: number,
     imagem: string
 }
 
 export interface IEditProduto{
     nome?: string,
-    data?: string,
+    data?: number,
     preco?: number,
     imagem?: string
 }
