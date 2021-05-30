@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import admin from 'firebase-admin'
 import config from '../config'
 
 export interface IProduto{
@@ -15,8 +15,10 @@ export interface IEditProduto{
     imagem?: string
 }
 
-firebase.initializeApp(config.firebase)
-const firestore = firebase.firestore()
+admin.initializeApp({
+    credential: admin.credential.cert(config.firebaseAdmin)
+})
+const firestore = admin.firestore()
 
 const produtosCollectionName = 'produtos'
 

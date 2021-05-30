@@ -1,14 +1,30 @@
 import React, { useState } from 'react'
 
-import serverApi from '../../services/serverApi'
+import { firebaseAuth } from '../../services/firebaseApi'
+import { hasLocalToken } from '../../services/localStorage'
+
 
 export default function Home(){
 
-    const [produtos, setProdutos] = useState('')
+    const [userName, setUserName] = useState('')
+    const [userPic, setUserPic] = useState('')
 
-    serverApi.getProdutos().then(produtos => setProdutos(produtos.map(produto => produto.nome).toString()))
+    if(hasLocalToken())
+        firebaseAuth().then(userResponse=>{
+            setUserName(userResponse.name || '')
+            setUserPic(userResponse.picture || '')
+        })
+
+    async function login(){
+        const newUser = await firebaseAuth()
+        setUserName(newUser.name || '')
+        setUserPic(newUser.picture || '')
+    }
 
     return (
-        <h1>{produtos}</h1>
+        <div>
+            <h1>ola {userName}</h1>
+            <button onClick={login}>login com google</button>
+        </div>
     )
 }
