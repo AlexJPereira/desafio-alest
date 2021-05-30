@@ -1,5 +1,6 @@
 # configuration
 /server/src/config.ts
+/client/src/services/config.ts
 
 # dependencies
 /server/node_modules
