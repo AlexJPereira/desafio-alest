@@ -1,18 +1,15 @@
-# configuration
-/server/src/config.ts
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/server/node_modules
-/client/node_modules
-/client/.pnp
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-/client/coverage
+/coverage
 
 # production
-/server/bin
-/client/build
+/build
 
 # misc
 .DS_Store
