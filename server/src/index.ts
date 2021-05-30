@@ -4,5 +4,7 @@ import routes from './routes'
 
 const app = express()
 
+app.use(express.urlencoded({ extended: true }))
 app.use(routes)
-app.listen(config.port, ()=>console.log(`servidor iniciado na porta ${config.port}`))
+
+app.listen(config.server.port, ()=>console.log(`servidor iniciado na porta ${config.server.port}`))

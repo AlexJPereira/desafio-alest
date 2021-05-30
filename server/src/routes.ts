@@ -1,4 +1,5 @@
 import express, {Request, Response} from 'express'
+import { getProdutos, postProduto, putProduto, deleteProduto } from './controllers/firebaseController'
 
 const routes = express.Router()
 
@@ -7,9 +8,9 @@ function test(text: string, req: Request, res: Response){
     res.send("ok")
 }
 
-routes.get('/produtos', (request, response)=>test("get", request, response))
-routes.post('/produtos', (request, response)=>test("post", request, response))
-routes.put('/produtos', (request, response)=>test("put", request, response))
-routes.delete('/produtos', (request, response)=>test("delete", request, response))
+routes.get('/produtos', getProdutos)
+routes.post('/produtos', postProduto)
+routes.put('/produtos', putProduto)
+routes.delete('/produtos', deleteProduto)
 
 export default routes
