@@ -1,38 +1,57 @@
-import firebase from 'firebase'
+import admin from 'firebase-admin'
 import config from '../config'
+
+export interface IDBItem{
+    id: string,
+    nome: string,
+    data: number,
+    preco: number,
+    imagem: string
+}
 
 export interface IProduto{
     nome: string,
-    data: string,
+    data: number,
     preco: number,
     imagem: string
 }
 
 export interface IEditProduto{
     nome?: string,
-    data?: string,
+    data?: number,
     preco?: number,
     imagem?: string
 }
 
-firebase.initializeApp(config.firebase)
-const firestore = firebase.firestore()
+admin.initializeApp({
+    credential: admin.credential.cert(config.firebaseAdmin)
+})
+const firestore = admin.firestore()
 
 const produtosCollectionName = 'produtos'
 
-export async function getProdutos(config?: {limit?: number, offset?: number}){
-    const snapshot = await firestore
+export async function getProdutos(config?: {limit?: number, offset?: number, query?: string}){
+    let snapshot = await firestore
         .collection(produtosCollectionName)
-        .orderBy('data', 'asc')
-        .startAfter(config?.offset || 0)
-        .limit(config?.limit || 25)
+        .orderBy('nome', 'asc')
+        .startAfter(Number(config?.offset || 0))
+        .limit(Number(config?.limit || 10000))
         .get()
-    
-    const produtos = [] as IProduto[]
+
+    const produtos = [] as IDBItem[]
 
     snapshot.forEach(produto => {
-        const produtoType = produto.data() as unknown
-        produtos.push(produtoType as IProduto)
+        const produtoType = produto.data()
+        const nome = produtoType.nome as string
+
+        if(!config?.query || (nome.toLowerCase().indexOf(config.query.toLowerCase()) >= 0))
+            produtos.push({
+                id: produto.id,
+                data: produtoType.data,
+                imagem: produtoType.imagem,
+                nome: produtoType.nome,
+                preco: produtoType.preco
+            } as IDBItem)
     })
 
     return produtos

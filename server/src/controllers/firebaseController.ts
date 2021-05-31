@@ -16,8 +16,9 @@ export interface IPutProdutoBody{
 }
 
 export async function getProdutos(request: Request, response: Response){
+    const params = request.query as {limit?: number, offset?: number, query?: string}
     try{
-        const produtos = await firebaseApi.getProdutos()
+        const produtos = await firebaseApi.getProdutos(params)
         response.send(produtos)
     }catch(err){
         console.log(err)
@@ -30,8 +31,15 @@ export async function postProduto(request: Request, response: Response){
     if(body.imagem && body.nome && body.preco){
 
         const date = new Date()
+        const newProduto = {
+            imagem: body.imagem,
+            nome: body.nome,
+            preco: body.preco,
+            data: date.getTime()
+        }
+
         try{
-            await firebaseApi.postProduto({ ...body, data: date.getTime().toString() })
+            await firebaseApi.postProduto(newProduto)
             response.sendStatus(200)
         }catch(err){
             console.log(err)
