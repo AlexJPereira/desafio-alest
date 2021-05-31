@@ -1,11 +1,19 @@
 import axios from 'axios'
 import { serverConfig } from './config'
 
+export interface IDBItem{
+    id: string,
+    imagem: string,
+    nome: string,
+    preco: number,
+    data: number
+}
+
 export interface IProdutos{
     imagem: string,
     nome: string,
     preco: number,
-    data: string
+    data: number
 }
 
 export interface IEditConfig{
@@ -24,9 +32,11 @@ const api = axios.create({
     baseURL: serverConfig.baseURL
 })
 
-export async function getProdutos(){
-    const produtos = await api.get('/produtos')
-    return produtos.data as IProdutos[]
+export async function getProdutos(query?: string){
+    const produtos = await api.get('/produtos', {
+        params: { query }
+    })
+    return produtos.data as IDBItem[]
 }
 
 export async function editProduto(id: string, config: IEditConfig){

@@ -16,8 +16,9 @@ export interface IPutProdutoBody{
 }
 
 export async function getProdutos(request: Request, response: Response){
+    const params = request.query as {limit?: number, offset?: number, query?: string}
     try{
-        const produtos = await firebaseApi.getProdutos()
+        const produtos = await firebaseApi.getProdutos(params)
         response.send(produtos)
     }catch(err){
         console.log(err)
